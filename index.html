@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Memorization Game</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Memorization Game</h1>
+    <p>Memorize the sequence and click the buttons in the correct order.</p>
+
+    <div id="game">
+        <div id="sequence"></div>
+        <div id="buttons" class="hidden">
+            <button onclick="checkSequence(1)">1</button>
+            <button onclick="checkSequence(2)">2</button>
+            <button onclick="checkSequence(3)">3</button>
+            <button onclick="checkSequence(4)">4</button>
+        </div>
+    </div>
+
+    <script>
+        var sequence = [];
+        var userInput = [];
+        var currentIndex = 0;
+
+        function generateSequence() {
+            // Generate a random sequence of numbers between 1 and 4
+            for (var i = 0; i < 4; i++) {
+                var num = Math.floor(Math.random() * 4) + 1;
+                sequence.push(num);
+            }
+        }
+
+        function displaySequence() {
+            var sequenceDiv = document.getElementById("sequence");
+            sequenceDiv.textContent = sequence.join(" ");
+        }
+
+        function startGame() {
+            var buttonsDiv = document.getElementById("buttons");
+            buttonsDiv.classList.remove("hidden");
+            generateSequence();
+            displaySequence();
+            setTimeout(hideSequence, 2000); // Hide the sequence after 2 seconds
+        }
+
+        function hideSequence() {
+            var sequenceDiv = document.getElementById("sequence");
+            sequenceDiv.textContent = "";
+            userInput = [];
+            currentIndex = 0;
+        }
+
+        function checkSequence(num) {
+            var expectedNum = sequence[currentIndex];
+            userInput.push(num);
+
+            if (num === expectedNum) {
+                currentIndex++;
+                if (currentIndex === sequence.length) {
+                    // Player completed the sequence
+                    alert("Congratulations! You got it right.");
+                    startGame();
+                }
+            } else {
+                // Player made a mistake
+                alert("Oops! You got it wrong. Game Over.");
+                sequence = [];
+                var buttonsDiv = document.getElementById("buttons");
+                buttonsDiv.classList.add("hidden");
+            }
+        }
+    </script>
+</body>
+</html>
